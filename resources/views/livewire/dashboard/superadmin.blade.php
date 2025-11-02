@@ -140,6 +140,13 @@ new #[Layout('components.layouts.app')] class extends Component {
                                 Manage All Users
                             </flux:button>
                             
+                            <flux:button variant="primary" class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 sm:py-3 rounded-lg text-base sm:text-lg font-medium" href="{{ route('superadmin.student-manager') }}">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                                Student QR Manager
+                            </flux:button>
+                            
                             
                             <flux:button variant="outline" class="w-full border-purple-500 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-zinc-700 py-2.5 sm:py-3 rounded-lg text-base sm:text-lg font-medium">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

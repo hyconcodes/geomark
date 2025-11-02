@@ -48,6 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Volt::route('superadmin/level-promotion-manager', 'admin.level-promotion-manager')
             ->middleware('permission:can.promote.students')
             ->name('superadmin.level-promotion-manager');
+        Volt::route('superadmin/student-manager', 'admin.student-manager')
+            ->middleware('permission:can.manage.students')
+            ->name('superadmin.student-manager');
         // For superadmin to view profile
         Volt::route('student/profile/{user}', 'profiles.student')
             ->middleware('permission:can.view.other.profiles')
@@ -85,6 +88,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Volt::route('student/classes/{classId}/attendance', 'student.mark-attendance')
             ->middleware('permission:can.mark.attendance')
             ->name('student.mark-attendance');
+        Volt::route('student/classes/{classId}/qr-attendance', 'student.qr-attendance')
+            ->middleware('permission:can.mark.attendance')
+            ->name('student.qr-attendance');
         Volt::route('student/complaints', 'student.complaints')
             ->middleware('permission:can.create.complaints|can.view.complaints')
             ->name('student.complaints');

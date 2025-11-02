@@ -82,7 +82,7 @@ class UserSeeder extends Seeder
             User::create([
                 'name' => $student['name'],
                 'email' => $student['lastname'] . '.' . $student['matric'] . '@bouesti.edu.ng',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('password'),
                 'matric_no' => $student['matric'],
                 'department_id' => $department->id,
                 'level' => $level,
@@ -100,7 +100,7 @@ class UserSeeder extends Seeder
             User::create([
                 'name' => $lecturer,
                 'email' => $emailName . '@bouesti.edu.ng',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('password'),
                 'department_id' => $department->id,
                 'avatar' => User::generateRandomAvatar(),
             ])->assignRole('lecturer');

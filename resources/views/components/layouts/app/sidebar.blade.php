@@ -34,6 +34,9 @@
                     wire:navigate class="text-sm sm:text-base">{{ __('Level Promotion') }}</flux:navlist.item>
                 <flux:navlist.item icon="chat-bubble-left-ellipsis" :href="route('superadmin.complaints')" :current="request()->routeIs('superadmin.complaints')"
                     wire:navigate class="text-sm sm:text-base">{{ __('Manage Complaints') }}</flux:navlist.item>
+                <flux:navlist.item icon="qr-code" :href="route('superadmin.student-manager')" :current="request()->routeIs('superadmin.student-manager')"
+                    wire:navigate class="text-sm sm:text-base">{{ __('Student QR Manager') }}</flux:navlist.item>
+                    
                 @endrole
 
                 @role('lecturer')

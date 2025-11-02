@@ -29,6 +29,7 @@ class User extends Authenticatable
         'avatar',
         'department_id',
         'level',
+        'qr_code',
     ];
 
     /**
@@ -174,5 +175,61 @@ class User extends Authenticatable
     public function complaints()
     {
         return $this->hasMany(Complaint::class, 'student_id');
+    }
+
+    /**
+     * Get formatted level display
+     */
+    public function getFormattedLevel(): string
+    {
+        if (!$this->level) {
+            return 'N/A';
+        }
+        
+        return $this->level . 'Level';
+    }
+
+    /**
+     * Generate QR code for the user
+     */
+    public function generateQrCode(): string
+    {
+        $qrData = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'matric_no' => $this->matric_no,
+            'department' => $this->department ? $this->department->name : 'N/A',
+            'level' => $this->level,
+        ];
+
+        $qrContent = "Name: {$qrData['name']}\n";
+        $qrContent .= "Email: {$qrData['email']}\n";
+        $qrContent .= "Matric No: {$qrData['matric_no']}\n";
+        $qrContent .= "Department: {$qrData['department']}\n";
+        $qrContent .= "Level: {$qrData['level']}";
+
+        $builder = new \Endroid\QrCode\Builder\Builder(
+            writer: new \Endroid\QrCode\Writer\SvgWriter(),
+            data: $qrContent,
+            size: 300,
+            margin: 10
+        );
+        
+        $result = $builder->build();
+        
+        return $result->getString();
+    }
+
+    /**
+     * Get the user's QR code (generate if not exists)
+     */
+    public function getQrCode(): string
+    {
+        if (!$this->qr_code) {
+            $this->qr_code = $this->generateQrCode();
+            $this->save();
+        }
+
+        return $this->qr_code;
     }
 }

@@ -143,9 +143,9 @@ class RolePermissionSeeder extends Seeder
 
         // Create a default superadmin user
         $superadmin = User::firstOrCreate(
-            ['email' => 'admin@bouesti.edu.ng'],
+            ['email' => 'admin@geomark.com'],
             [
-                'name' => 'Super Admin',
+                'name' => 'Oyeniran Samuel',
                 'password' => Hash::make('password'),
             ]
         );

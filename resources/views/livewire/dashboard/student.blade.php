@@ -153,6 +153,59 @@ new #[Layout('components.layouts.app')] class extends Component {
             </div>
         </div>
 
+        <!-- Student QR Code Section -->
+        <div class="mb-6 sm:mb-8 hidden">
+            <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-700 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-white">My QR Code</h2>
+                    <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6">
+                    <!-- QR Code Display -->
+                    <div class="flex-shrink-0">
+                        @if(auth()->user()->getQrCode())
+                            <div class="bg-white p-4 rounded-lg shadow-inner border-2 border-zinc-100">
+                                <img src="data:image/svg+xml;base64,{{ base64_encode(auth()->user()->getQrCode()) }}" 
+                                     alt="Student QR Code" 
+                                     class="w-32 h-32 sm:w-40 sm:h-40">
+                            </div>
+                        @else
+                            <div class="w-32 h-32 sm:w-40 sm:h-40 bg-zinc-100 dark:bg-zinc-700 rounded-lg flex items-center justify-center">
+                                <svg class="w-8 h-8 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <!-- QR Code Information -->
+                    <div class="flex-1 text-center lg:text-left">
+                        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Student Identification QR Code</h3>
+                        <div class="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
+                            <p><span class="font-medium">Name:</span> {{ auth()->user()->name }}</p>
+                            <p><span class="font-medium">Matric No:</span> {{ auth()->user()->matric_no }}</p>
+                            <p><span class="font-medium">Email:</span> {{ auth()->user()->email }}</p>
+                            <p><span class="font-medium">Department:</span> {{ auth()->user()->department->name ?? 'N/A' }}</p>
+                            <p><span class="font-medium">Level:</span> {{ auth()->user()->getFormattedLevel() }}</p>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <p class="text-xs text-blue-700 dark:text-blue-300">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                This QR code contains your student information and can be used for attendance verification.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Main Actions -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             <!-- Class Management -->

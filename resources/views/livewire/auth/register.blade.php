@@ -48,6 +48,10 @@ new #[Layout('components.layouts.auth')] class extends Component {
         // Assign student role by default
         $user->assignRole('student');
 
+        // Generate QR code for the student
+        $user->qr_code = $user->generateQrCode();
+        $user->save();
+
         event(new Registered($user));
 
         Auth::login($user);
