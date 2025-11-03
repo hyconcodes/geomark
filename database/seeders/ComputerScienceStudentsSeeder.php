@@ -91,5 +91,29 @@ class ComputerScienceStudentsSeeder extends Seeder
         }
 
         $this->command->info('Created 50 Computer Science students at 100 level.');
+
+        // 5 Computer Science students for 300 level
+        $level300Students = [
+            ['name' => 'Adebisi Oluwaseun', 'lastname' => 'adebisi', 'matric' => '20250001'],
+            ['name' => 'Bakare Temitope', 'lastname' => 'bakare', 'matric' => '20250002'],
+            ['name' => 'Chukwuemeka Victor', 'lastname' => 'chukwuemeka', 'matric' => '20250003'],
+            ['name' => 'Damilola Grace', 'lastname' => 'damilola', 'matric' => '20250004'],
+            ['name' => 'Emeka Johnson', 'lastname' => 'emeka', 'matric' => '20250005'],
+        ];
+
+        // Create 5 Computer Science students at 300 level
+        foreach ($level300Students as $student) {
+            User::create([
+                'name' => $student['name'],
+                'email' => $student['lastname'] . '.' . $student['matric'] . '@bouesti.edu.ng',
+                'password' => Hash::make('password123'),
+                'matric_no' => $student['matric'],
+                'department_id' => $cscDepartment->id,
+                'level' => '300',
+                'avatar' => User::generateRandomAvatar(),
+            ])->assignRole('student');
+        }
+
+        $this->command->info('Created 5 Computer Science students at 300 level.');
     }
 }

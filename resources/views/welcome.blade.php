@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#16A34A">
+    <meta name="theme-color" content="#059669">
     
     <title>GeoMark - Smart Geolocation-Based Attendance System</title>
     
@@ -14,32 +14,35 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <style>
         * {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
         
         :root {
-            --primary-green: #16A34A;
-            --primary-gold: #D4AF37;
-            --light-gray: #F8FAFC;
-            --medium-gray: #E2E8F0;
-            --text-dark: #1E293B;
+            --primary-green: #059669;
+            --primary-blue: #0284C7;
+            --secondary-green: #10B981;
+            --secondary-blue: #3B82F6;
+            --light-green: #ECFDF5;
+            --light-blue: #EFF6FF;
+            --text-dark: #0F172A;
+            --text-gray: #64748B;
         }
         
         body {
-            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--light-blue) 50%, var(--light-green) 100%);
         }
         
         .navbar {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(5, 150, 105, 0.1);
             position: sticky;
             top: 0;
             z-index: 50;
@@ -48,12 +51,12 @@
         
         .navbar.scrolled {
             background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(5, 150, 105, 0.1);
         }
         
         .hero-section {
-            min-height: 90vh;
-            background: linear-gradient(135deg, rgba(22, 163, 74, 0.05) 0%, rgba(212, 175, 55, 0.05) 100%);
+            min-height: 95vh;
+            background: linear-gradient(135deg, var(--light-green) 0%, var(--light-blue) 50%, #FFFFFF 100%);
             position: relative;
             overflow: hidden;
         }
@@ -64,11 +67,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            opacity: 0.1;
+            opacity: 0.08;
             background-image: radial-gradient(circle at 25% 25%, var(--primary-green) 2px, transparent 2px),
-                              radial-gradient(circle at 75% 75%, var(--primary-gold) 1px, transparent 1px);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
+                              radial-gradient(circle at 75% 75%, var(--primary-blue) 1px, transparent 1px);
+            background-size: 80px 80px;
+            background-position: 0 0, 40px 40px;
         }
         
         .fade-in {
@@ -120,60 +123,62 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-gold) 0%, #F59E0B 100%);
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
             color: white;
             border-radius: 12px;
-            padding: 14px 28px;
+            padding: 16px 32px;
             font-weight: 600;
             font-size: 16px;
             border: none;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
             position: relative;
             overflow: hidden;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+            background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
         }
         
         .btn-secondary {
-            background: transparent;
-            color: var(--primary-green);
-            border: 2px solid var(--primary-green);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            border: none;
             border-radius: 12px;
-            padding: 12px 28px;
+            padding: 16px 32px;
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
         }
         
         .btn-secondary:hover {
-            background: var(--primary-green);
-            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.4);
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
         }
         
         .btn-outline {
             background: transparent;
-            color: var(--text-dark);
-            border: 1px solid var(--medium-gray);
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-weight: 500;
-            font-size: 14px;
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
         .btn-outline:hover {
-            background: var(--light-gray);
-            border-color: var(--primary-green);
-            color: var(--primary-green);
+            background: var(--primary-green);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
         }
         
         .feature-card {
@@ -205,16 +210,105 @@
             background: linear-gradient(135deg, var(--primary-green) 0%, #22C55E 100%);
         }
         
-        .icon-gold {
-            background: linear-gradient(135deg, var(--primary-gold) 0%, #F59E0B 100%);
+        .icon-blue {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        }
+        
+        .icon-green {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+        }
+        
+        .stats-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(5, 150, 105, 0.1);
+            border: 1px solid rgba(5, 150, 105, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);
+        }
+        
+        .stats-number {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        .stats-label {
+            color: var(--text-gray);
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .hero-illustration {
-            background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%);
+            background: linear-gradient(135deg, var(--light-green) 0%, var(--light-blue) 100%);
             border-radius: 24px;
-            padding: 40px;
+            padding: 48px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-illustration::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary-green) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .section-title {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        
+        .section-subtitle {
+            font-size: 20px;
+            color: var(--text-medium);
+            text-align: center;
+            margin-bottom: 64px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
         }
         
         .mobile-menu {
@@ -224,6 +318,50 @@
         
         .mobile-menu.open {
             transform: translateX(0);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+            color: white;
+            padding: 64px 0 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+        }
+        
+        .footer-content {
+            position: relative;
+            z-index: 1;
         }
         
         @media (max-width: 768px) {
@@ -239,6 +377,24 @@
                 width: 64px;
                 height: 64px;
                 margin-bottom: 16px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .section-subtitle {
+                font-size: 18px;
+                margin-bottom: 48px;
+            }
+            
+            .hero-illustration {
+                padding: 32px;
+                min-height: 250px;
+            }
+            
+            .stats-number {
+                font-size: 36px;
             }
         }
     </style>
@@ -323,7 +479,7 @@
                 <!-- Hero Content -->
                 <div class="slide-in-left" style="animation-delay: 0.2s;">
                     <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
-                        Smart <span class="text-yellow-600">Geolocation</span><br>
+                        Smart <span class="text-blue-600">Geolocation</span><br>
                         Attendance System
                     </h1>
                     <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
@@ -373,8 +529,8 @@
                                     <circle cx="15" cy="15" r="1.5" fill="#E2E8F0" opacity="0.6"/>
                                 </pattern>
                                 <linearGradient id="phoneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#D4AF37"/>
-                                    <stop offset="100%" style="stop-color:#F59E0B"/>
+                                    <stop offset="0%" style="stop-color:#059669"/>
+                                    <stop offset="100%" style="stop-color:#0284C7"/>
                                 </linearGradient>
                                 <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                     <stop offset="0%" style="stop-color:#16A34A"/>
@@ -427,7 +583,7 @@
                             
                             <!-- Floating Icons -->
                             <g transform="translate(150, 100)" opacity="0.8">
-                                <circle cx="0" cy="0" r="12" fill="#D4AF37"/>
+                                <circle cx="0" cy="0" r="12" fill="#059669"/>
                                 <text x="0" y="5" text-anchor="middle" fill="white" font-size="12" font-weight="bold">2FA</text>
                             </g>
                             
@@ -438,15 +594,15 @@
                             
                             <!-- GPS Satellites -->
                             <g transform="translate(100, 50)" opacity="0.6">
-                                <rect x="-4" y="-2" width="8" height="4" fill="#D4AF37"/>
-                                <rect x="-6" y="-1" width="2" height="2" fill="#D4AF37"/>
-                                <rect x="4" y="-1" width="2" height="2" fill="#D4AF37"/>
+                                <rect x="-4" y="-2" width="8" height="4" fill="#059669"/>
+                                <rect x="-6" y="-1" width="2" height="2" fill="#059669"/>
+                                <rect x="4" y="-1" width="2" height="2" fill="#059669"/>
                             </g>
                             
                             <g transform="translate(400, 80)" opacity="0.6">
-                                <rect x="-4" y="-2" width="8" height="4" fill="#D4AF37"/>
-                                <rect x="-6" y="-1" width="2" height="2" fill="#D4AF37"/>
-                                <rect x="4" y="-1" width="2" height="2" fill="#D4AF37"/>
+                                <rect x="-4" y="-2" width="8" height="4" fill="#059669"/>
+                                <rect x="-6" y="-1" width="2" height="2" fill="#059669"/>
+                                <rect x="4" y="-1" width="2" height="2" fill="#059669"/>
                             </g>
                         </svg>
                     </div>
@@ -460,7 +616,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 slide-up" style="animation-delay: 0.1s;">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                    Why Choose <span class="text-yellow-600">GeoMark</span>?
+                    Why Choose <span class="text-blue-600">GeoMark</span>?
                 </h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Advanced technology meets academic integrity with our comprehensive attendance verification system.
@@ -485,7 +641,7 @@
 
                 <!-- Feature 2 -->
                 <div class="feature-card slide-up" style="animation-delay: 0.3s;">
-                    <div class="icon-circle icon-gold">
+                    <div class="icon-circle icon-blue">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                         </svg>
@@ -519,7 +675,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 slide-up">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                    How It <span class="text-yellow-600">Works</span>
+                    How It <span class="text-blue-600">Works</span>
                 </h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Simple, secure, and reliable attendance marking in just three easy steps.
@@ -540,7 +696,7 @@
 
                 <!-- Step 2 -->
                 <div class="text-center slide-up" style="animation-delay: 0.2s;">
-                    <div class="w-20 h-20 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <span class="text-2xl font-bold text-white">2</span>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-4">📍 Verify Location</h3>
@@ -569,7 +725,7 @@
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="slide-in-left">
                     <h2 class="text-4xl font-bold text-gray-900 mb-6">
-                        Preventing <span class="text-yellow-600">Proxy Attendance</span>
+                        Preventing <span class="text-blue-600">Proxy Attendance</span>
                     </h2>
                     <p class="text-lg text-gray-600 mb-6 leading-relaxed">
                         Our platform revolutionizes academic integrity by combining cutting-edge geolocation technology 
@@ -618,7 +774,7 @@
                 
                 <!-- Illustration -->
                 <div class="slide-in-right">
-                    <div class="bg-gradient-to-br from-green-50 to-yellow-50 rounded-3xl p-8 relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-3xl p-8 relative overflow-hidden">
                         <svg class="w-full h-80" viewBox="0 0 400 300" fill="none">
                             <!-- Classroom Background -->
                             <rect width="400" height="300" fill="#F8FAFC"/>

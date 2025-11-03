@@ -103,13 +103,21 @@ new #[Layout('components.layouts.app', ['title' => 'QR Attendance'])] class exte
             return;
         }
         
+        // Ensure the scanned QR code belongs to the currently logged-in student
+        if ($student->id !== Auth::id()) {
+            $this->scannerError = 'You can only scan your own QR code to mark attendance.';
+            $this->showToast($this->scannerError, 'error');
+            $this->dispatch('restart-qr-scanner');
+            return;
+        }
+        
         // Check if student already marked attendance
         $existingAttendance = ClassAttendance::where('class_id', $this->class->id)
             ->where('student_id', $student->id)
             ->first();
             
         if ($existingAttendance) {
-            $this->scannerError = 'This student has already marked attendance for this class.';
+            $this->scannerError = 'You have already marked attendance for this class.';
             $this->showToast($this->scannerError, 'error');
             $this->dispatch('restart-qr-scanner');
             return;
@@ -231,12 +239,17 @@ new #[Layout('components.layouts.app', ['title' => 'QR Attendance'])] class exte
             ]);
             
             // Log the attendance
-            app(AttendanceLogService::class)->logAttendance(
+            app(AttendanceLogService::class)->logSuccess(
                 $this->class,
-                User::find($this->scannedStudent['id']),
-                $this->latitude,
-                $this->longitude,
-                $this->distance
+                [
+                    'student_id' => $this->scannedStudent['id'],
+                    'student_name' => $this->scannedStudent['name'],
+                    'student_matric' => $this->scannedStudent['matric_no'],
+                    'latitude' => $this->latitude,
+                    'longitude' => $this->longitude,
+                    'distance' => $this->distance,
+                    'method' => 'qr_code_scan'
+                ]
             );
             
             session()->flash('success', 'Attendance marked successfully via QR code scan!');
@@ -387,8 +400,8 @@ new #[Layout('components.layouts.app', ['title' => 'QR Attendance'])] class exte
         @if($locationCaptured && $withinRadius && !$studentConfirmed)
             <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 mb-6">
                 <div class="p-6 border-b border-zinc-200 dark:border-zinc-700">
-                    <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Step 2: Scan Student QR Code</h2>
-                    <p class="text-zinc-600 dark:text-zinc-400 mt-1">Position the QR code within the camera frame</p>
+                    <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Step 2: Scan Your QR Code</h2>
+                    <p class="text-zinc-600 dark:text-zinc-400 mt-1">Position your personal QR code within the camera frame</p>
                 </div>
 
                 <div class="p-6">
@@ -399,8 +412,8 @@ new #[Layout('components.layouts.app', ['title' => 'QR Attendance'])] class exte
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
                                 </svg>
                             </div>
-                            <h3 class="text-lg font-medium text-zinc-900 dark:text-white mb-2">Ready to Scan</h3>
-                            <p class="text-zinc-600 dark:text-zinc-400 mb-6">Click the button below to start scanning student QR codes</p>
+                            <h3 class="text-lg font-medium text-zinc-900 dark:text-white mb-2">Ready to Scan Your QR Code</h3>
+                            <p class="text-zinc-600 dark:text-zinc-400 mb-6">Click the button below to start scanning your personal QR code</p>
                             <button wire:click="startQRScannerAfterLocation" 
                                 class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -451,7 +464,7 @@ new #[Layout('components.layouts.app', ['title' => 'QR Attendance'])] class exte
             <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 mb-6">
                 <div class="p-6 border-b border-zinc-200 dark:border-zinc-700">
                     <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Step 3: Confirm Student Details</h2>
-                    <p class="text-zinc-600 dark:text-zinc-400 mt-1">Please verify the scanned student information</p>
+                    <p class="text-zinc-600 dark:text-zinc-400 mt-1">Please verify your scanned information</p>
                 </div>
 
                 <div class="p-6">

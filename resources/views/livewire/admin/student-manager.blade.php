@@ -11,6 +11,7 @@ new class extends Component {
 
     public $search = '';
     public $department_id = '';
+    public $level = '';
     public $showQrModal = false;
     public $selectedStudentForQr = null;
 
@@ -20,6 +21,11 @@ new class extends Component {
     }
 
     public function updatedDepartmentId()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedLevel()
     {
         $this->resetPage();
     }
@@ -102,6 +108,10 @@ new class extends Component {
             $query->where('department_id', $this->department_id);
         }
 
+        if ($this->level) {
+            $query->where('level', $this->level);
+        }
+
         return $query->orderBy('name');
     }
 
@@ -139,7 +149,7 @@ new class extends Component {
         @endif
 
         <!-- Search and Filter Controls -->
-        <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             <flux:input 
                 wire:model.live.debounce.300ms="search" 
                 placeholder="Search by name, email, or matric number"
@@ -155,6 +165,18 @@ new class extends Component {
                 @foreach($departments as $department)
                     <option value="{{ $department->id }}">{{ $department->name }}</option>
                 @endforeach
+            </flux:select>
+            <flux:select 
+                wire:model.live="level"
+                label="Filter by Level"
+                placeholder="All Levels"
+            >
+                <option value="">All Levels</option>
+                <option value="100">100 Level</option>
+                <option value="200">200 Level</option>
+                <option value="300">300 Level</option>
+                <option value="400">400 Level</option>
+                <option value="500">500 Level</option>
             </flux:select>
         </div>
 

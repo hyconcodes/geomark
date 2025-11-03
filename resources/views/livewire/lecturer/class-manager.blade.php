@@ -146,7 +146,7 @@ new #[Layout('components.layouts.app', ['title' => 'Class Manager'])] class exte
     {
         $students = User::where('department_id', $class->department_id)
             ->where('level', $class->level)
-            ->where('role', 'student')
+            ->role('student')
             ->get();
             
         foreach ($students as $student) {
@@ -575,69 +575,71 @@ new #[Layout('components.layouts.app', ['title' => 'Class Manager'])] class exte
                                 </div>
                             </div>
                             
-                            <div class="flex flex-wrap gap-2">
+                            <!-- Action Buttons - Stacked vertically with colors -->
+                            <div class="flex flex-col gap-2 w-full sm:w-auto sm:min-w-[200px]">
                                 @if($class->status === 'active')
                                     <flux:button 
                                         wire:click="confirmToggleClass({{ $class->id }}, 'pause')" 
-                                        variant="ghost" 
+                                        variant="filled" 
                                         size="sm"
+                                        class="w-full justify-center !bg-yellow-500 hover:!bg-yellow-600 !text-white"
                                     >
-                                        <flux:icon.pause class="size-4" />
-                                        Pause
+                                        Pause Class
                                     </flux:button>
                                 @elseif($class->status === 'paused')
                                     <flux:button 
                                         wire:click="confirmToggleClass({{ $class->id }}, 'resume')" 
-                                        variant="ghost" 
+                                        variant="filled" 
                                         size="sm"
+                                        class="w-full justify-center !bg-green-500 hover:!bg-green-600 !text-white"
                                     >
-                                        <flux:icon.play class="size-4" />
-                                        Resume
+                                        Resume Class
                                     </flux:button>
                                 @endif
                                 
                                 @if($class->status !== 'ended')
                                     <flux:button 
                                         wire:click="toggleAttendance({{ $class->id }})" 
-                                        variant="ghost" 
+                                        variant="filled" 
                                         size="sm"
+                                        class="w-full justify-center {{ $class->attendance_open ? '!bg-red-500 hover:!bg-red-600' : '!bg-blue-500 hover:!bg-blue-600' }} !text-white"
                                     >
                                         @if($class->attendance_open)
-                                            <flux:icon.lock-closed class="size-4" />
                                             Close Attendance
                                         @else
-                                            <flux:icon.lock-open class="size-4" />
                                             Open Attendance
                                         @endif
-                                    </flux:button>
-                                    
-                                    <flux:button 
-                                        wire:click="confirmToggleClass({{ $class->id }}, 'end')" 
-                                        variant="danger" 
-                                        size="sm"
-                                    >
-                                        <flux:icon.stop class="size-4" />
-                                        End Class
                                     </flux:button>
                                 @endif
                                 
                                 <flux:button 
                                     wire:click="downloadAttendance({{ $class->id }})" 
-                                    variant="ghost" 
+                                    variant="filled" 
                                     size="sm"
+                                    class="w-full justify-center !bg-purple-500 hover:!bg-purple-600 !text-white"
                                 >
-                                    <flux:icon.document-arrow-down class="size-4" />
-                                    Download PDF
+                                    Download Attendance
                                 </flux:button>
                                 
                                 <flux:button 
                                     wire:click="showManualAttendanceModal({{ $class->id }})" 
-                                    variant="ghost" 
+                                    variant="filled" 
                                     size="sm"
+                                    class="w-full justify-center !bg-indigo-500 hover:!bg-indigo-600 !text-white"
                                 >
-                                    <flux:icon.user-plus class="size-4" />
                                     Manage Attendance
                                 </flux:button>
+                                
+                                @if($class->status !== 'ended')
+                                    <flux:button 
+                                        wire:click="confirmToggleClass({{ $class->id }}, 'end')" 
+                                        variant="filled" 
+                                        size="sm"
+                                        class="w-full justify-center !bg-red-600 hover:!bg-red-700 !text-white"
+                                    >
+                                        End Class
+                                    </flux:button>
+                                @endif
                             </div>
                         </div>
                     </div>

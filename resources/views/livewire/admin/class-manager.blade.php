@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\User;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 new #[Layout('components.layouts.app', ['title' => 'Class Manager'])] class extends Component {
     use WithPagination;
@@ -113,26 +114,32 @@ new #[Layout('components.layouts.app', ['title' => 'Class Manager'])] class exte
      */
     public function downloadAttendance($classId)
     {
-        $class = ClassModel::with(['lecturer', 'department', 'attendances.student'])->findOrFail($classId);
-
-        // Get attendance data
-        $attendances = $class->attendances()->with('student')->get();
-        $totalStudents = User::where('role', 'student')->where('department_id', $class->department_id)->where('level', $class->level)->count();
-
-        $attendanceRate = $totalStudents > 0 ? round(($attendances->count() / $totalStudents) * 100, 2) : 0;
-
-        $pdf = \PDF::loadView('pdf.attendance-report', [
+        $class = ClassModel::with(['attendances.student', 'department', 'lecturer'])->find($classId);
+        if (!$class) {
+            $this->dispatch('show-toast', message: 'Class not found.', type: 'error');
+            return;
+        }
+        
+        $attendances = $class->attendances()->orderBy('marked_at', 'asc')->get();
+        
+        $totalStudents = User::role('student')
+            ->where('department_id', $class->department_id)
+            ->where('level', $class->level)
+            ->count();
+        
+        $pdf = Pdf::loadView('pdf.attendance-report', [
             'class' => $class,
             'attendances' => $attendances,
-            'totalStudents' => $totalStudents,
-            'attendanceRate' => $attendanceRate,
+            'totalStudents' => $totalStudents
         ]);
-
-        $filename = Str::slug($class->title) . '-attendance-' . now()->format('Y-m-d') . '.pdf';
-
+        
+        $filename = 'attendance-' . Str::slug($class->title) . '-' . now()->format('Y-m-d') . '.pdf';
+        
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();
-        }, $filename);
+        }, $filename, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 
     public function with(): array
@@ -514,9 +521,9 @@ new #[Layout('components.layouts.app', ['title' => 'Class Manager'])] class exte
                     ` : ''}
                 
                 <!-- Action Buttons -->
-                <div class="flex justify-end space-x-3 pt-4 border-t border-zinc-200 dark:border-zinc-700">
+                <div class="flex justify-end space-x-3 pt-4 border-t border-zinc-200 dark:border-zinc-700 hidden">
                     <button 
-                        onclick="downloadAttendancePdf(${classData.id})"
+                        onclick="$wire.downloadAttendance(${classData.id})"
                         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 flex items-center space-x-2"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -534,10 +541,6 @@ new #[Layout('components.layouts.app', ['title' => 'Class Manager'])] class exte
         function closeClassDetails() {
             document.getElementById('classDetailsModal').classList.add('hidden');
         }
-
-        function downloadAttendancePdf(classId) {
-        window.location.href = `{{ route('superadmin.class-manager') }}?download=${classId}`;
-    }
 
         // Close modal when clicking outside
         document.getElementById('classDetailsModal').addEventListener('click', function(e) {
