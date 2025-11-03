@@ -1,16 +1,16 @@
 const CACHE_NAME = 'geomark-v1.0.0';
-const OFFLINE_URL = '/offline';
+const OFFLINE_URL = '/offline.html';
 
 // Files to cache for offline functionality
 const STATIC_CACHE_URLS = [
   '/',
   '/dashboard',
-  '/offline',
+  '/offline.html',
   '/build/assets/app.css',
   '/build/assets/app.js',
   '/js/qr-scanner.js',
   '/js/avatar-generator.js',
-  '/manifest.json',
+  '/manifest.webmanifest',
   '/pwa-icons/icon-192x192.png',
   '/pwa-icons/icon-512x512.png'
 ];
