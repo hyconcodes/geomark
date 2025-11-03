@@ -500,6 +500,11 @@
                                 Go to Dashboard →
                             </a>
                         @endguest
+                        
+                        <!-- PWA Install Button -->
+                        <button id="pwa-install-btn" class="btn-outline text-center hidden" style="display: none;">
+                            📱 Install App
+                        </button>
                     </div>
                     
                     <!-- Stats -->

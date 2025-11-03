@@ -13,6 +13,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// PWA offline route
+Route::get('/offline', function () {
+    return view('offline');
+})->name('offline');
+
 // Role-based dashboard routes
 Route::middleware(['auth', 'verified'])->group(function () {
     // Redirect based on user role
