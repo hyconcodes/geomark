@@ -22,6 +22,13 @@
     <style>
         * {
             font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
         }
         
         :root {
@@ -311,13 +318,43 @@
             line-height: 1.6;
         }
         
+        .mobile-menu-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .mobile-menu-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
         .mobile-menu {
             transform: translateX(100%);
             transition: transform 0.3s ease;
+            max-width: 280px;
+            width: 80vw;
         }
         
         .mobile-menu.open {
             transform: translateX(0);
+        }
+        
+        /* Ensure all containers respect viewport width */
+        .max-w-7xl {
+            max-width: min(80rem, 100vw);
+            width: 100%;
+        }
+        
+        /* Fix any potential overflow issues */
+        .hero-section, .navbar, section {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
         
         @keyframes float {
@@ -396,10 +433,48 @@
             .stats-number {
                 font-size: 36px;
             }
+            
+            /* Ensure mobile menu doesn't cause overflow */
+            .mobile-menu {
+                width: min(280px, 85vw);
+                max-width: 85vw;
+            }
+            
+            /* Prevent text overflow on mobile */
+            h1, h2, h3, h4, h5, h6 {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            
+            /* Ensure buttons don't overflow */
+            .btn-primary, .btn-secondary, .btn-outline {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-menu {
+                width: min(260px, 90vw);
+                max-width: 90vw;
+            }
+            
+            .max-w-7xl {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .hero-section .grid {
+                gap: 2rem;
+            }
         }
     </style>
 </head>
 <body class="bg-white">
+    <!-- PWA Install Banner -->
+    <x-pwa-install-banner />
+    
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -440,12 +515,15 @@
             </div>
         </div>
 
+        <!-- Mobile Menu Backdrop -->
+        <div id="mobile-menu-backdrop" class="mobile-menu-backdrop md:hidden"></div>
+        
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-50">
-            <div class="p-6">
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 right-0 bg-white shadow-xl z-50">
+            <div class="h-full overflow-y-auto p-6">
                 <div class="flex justify-between items-center mb-8">
                     <span class="text-lg font-bold text-gray-900">Menu</span>
-                    <button id="close-menu-btn" class="text-gray-500 hover:text-gray-700">
+                    <button id="close-menu-btn" class="text-gray-500 hover:text-gray-700 p-2 -mr-2">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
@@ -453,17 +531,17 @@
                 </div>
                 
                 <div class="space-y-4">
-                    <a href="#home" class="block text-gray-700 hover:text-green-600 font-medium py-2">Home</a>
-                    <a href="#features" class="block text-gray-700 hover:text-green-600 font-medium py-2">Features</a>
-                    <a href="#how-it-works" class="block text-gray-700 hover:text-green-600 font-medium py-2">How It Works</a>
-                    <a href="#about" class="block text-gray-700 hover:text-green-600 font-medium py-2">About</a>
+                    <a href="#home" class="block text-gray-700 hover:text-green-600 font-medium py-3 px-2 rounded-lg hover:bg-gray-50 transition-colors">Home</a>
+                    <a href="#features" class="block text-gray-700 hover:text-green-600 font-medium py-3 px-2 rounded-lg hover:bg-gray-50 transition-colors">Features</a>
+                    <a href="#how-it-works" class="block text-gray-700 hover:text-green-600 font-medium py-3 px-2 rounded-lg hover:bg-gray-50 transition-colors">How It Works</a>
+                    <a href="#about" class="block text-gray-700 hover:text-green-600 font-medium py-3 px-2 rounded-lg hover:bg-gray-50 transition-colors">About</a>
                     
-                    <div class="pt-4 border-t border-gray-200">
+                    <div class="pt-6 border-t border-gray-200 space-y-3">
                         @guest
-                            <a href="{{ route('login') }}" class="block btn-outline w-full text-center mb-3">Login</a>
-                            <a href="{{ route('register') }}" class="block btn-primary w-full text-center">Get Started</a>
+                            <a href="{{ route('login') }}" class="block btn-outline text-center py-3">Login</a>
+                            <a href="{{ route('register') }}" class="block btn-primary text-center py-3">Get Started</a>
                         @else
-                            <a href="{{ route('dashboard') }}" class="block btn-primary w-full text-center">Dashboard</a>
+                            <a href="{{ route('dashboard') }}" class="block btn-primary text-center py-3">Dashboard</a>
                         @endguest
                     </div>
                 </div>
@@ -502,8 +580,14 @@
                         @endguest
                         
                         <!-- PWA Install Button -->
-                        <button id="pwa-install-btn" class="btn-outline text-center hidden" style="display: none;">
-                            📱 Install App
+                        <button id="pwa-install-btn" class="btn-outline text-center hidden group relative overflow-hidden" style="display: none;">
+                            <div class="flex items-center justify-center space-x-2">
+                                <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="font-medium">Install App</span>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-green-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                         </button>
                     </div>
                     

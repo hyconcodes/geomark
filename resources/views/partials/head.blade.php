@@ -61,14 +61,46 @@
         });
     }
 
-    // PWA Install Prompt
+    // PWA Install Prompt with Enhanced User Preferences
     let deferredPrompt;
     let installButton = null;
+    const PWA_STORAGE_KEY = 'geomark_pwa_preferences';
+
+    // Get PWA preferences from localStorage
+    function getPWAPreferences() {
+        const stored = localStorage.getItem(PWA_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : {
+            dismissed: false,
+            dismissedAt: null,
+            installPromptShown: false,
+            userDismissedCount: 0
+        };
+    }
+
+    // Save PWA preferences to localStorage
+    function savePWAPreferences(preferences) {
+        localStorage.setItem(PWA_STORAGE_KEY, JSON.stringify(preferences));
+    }
+
+    // Check if we should show install prompt based on user preferences
+    function shouldShowInstallPrompt() {
+        const prefs = getPWAPreferences();
+        const now = Date.now();
+        const daysSinceDismissal = prefs.dismissedAt ? (now - prefs.dismissedAt) / (1000 * 60 * 60 * 24) : 999;
+        
+        // Don't show if user dismissed recently (less than 7 days) or dismissed more than 3 times
+        return !prefs.dismissed || (daysSinceDismissal > 7 && prefs.userDismissedCount < 3);
+    }
 
     window.addEventListener('beforeinstallprompt', (e) => {
         console.log('PWA install prompt triggered');
         e.preventDefault();
         deferredPrompt = e;
+        
+        if (!shouldShowInstallPrompt()) {
+            console.log('Install prompt suppressed due to user preferences');
+            return;
+        }
         
         // Show install button if it exists
         installButton = document.getElementById('pwa-install-btn');
@@ -76,32 +108,90 @@
             installButton.style.display = 'block';
             installButton.addEventListener('click', installPWA);
         }
+
+        // Trigger banner display event
+        const bannerEvent = new CustomEvent('pwa-installable', { 
+            detail: { deferredPrompt: deferredPrompt } 
+        });
+        window.dispatchEvent(bannerEvent);
+
+        // Update preferences
+        const prefs = getPWAPreferences();
+        prefs.installPromptShown = true;
+        savePWAPreferences(prefs);
     });
 
     function installPWA() {
         if (deferredPrompt) {
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then((choiceResult) => {
+                const prefs = getPWAPreferences();
+                
                 if (choiceResult.outcome === 'accepted') {
                     console.log('User accepted the PWA install prompt');
+                    prefs.dismissed = false;
+                    prefs.userDismissedCount = 0;
                 } else {
                     console.log('User dismissed the PWA install prompt');
+                    prefs.dismissed = true;
+                    prefs.dismissedAt = Date.now();
+                    prefs.userDismissedCount += 1;
                 }
+                
+                savePWAPreferences(prefs);
                 deferredPrompt = null;
+                
                 if (installButton) {
                     installButton.style.display = 'none';
                 }
+
+                // Hide banner
+                const bannerHideEvent = new CustomEvent('pwa-install-completed');
+                window.dispatchEvent(bannerHideEvent);
             });
         }
+    }
+
+    // Function to dismiss install prompt permanently
+    function dismissInstallPrompt() {
+        const prefs = getPWAPreferences();
+        prefs.dismissed = true;
+        prefs.dismissedAt = Date.now();
+        prefs.userDismissedCount += 1;
+        savePWAPreferences(prefs);
+        
+        if (installButton) {
+            installButton.style.display = 'none';
+        }
+
+        // Hide banner
+        const bannerHideEvent = new CustomEvent('pwa-install-dismissed');
+        window.dispatchEvent(bannerHideEvent);
     }
 
     // Handle app installed
     window.addEventListener('appinstalled', (evt) => {
         console.log('PWA was installed');
+        
+        // Reset preferences since app is now installed
+        const prefs = getPWAPreferences();
+        prefs.dismissed = false;
+        prefs.userDismissedCount = 0;
+        savePWAPreferences(prefs);
+        
         if (installButton) {
             installButton.style.display = 'none';
         }
+
+        // Hide banner and show success message
+        const bannerHideEvent = new CustomEvent('pwa-installed');
+        window.dispatchEvent(bannerHideEvent);
     });
+
+    // Make functions globally available
+    window.installPWA = installPWA;
+    window.dismissInstallPrompt = dismissInstallPrompt;
+    window.getPWAPreferences = getPWAPreferences;
 
     // Offline attendance queue using IndexedDB
     function queueOfflineAttendance(attendanceData) {
