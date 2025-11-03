@@ -1,0 +1,78 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284C7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f9ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="url(#bgGradient)"/>
+  
+  <!-- Location Pin -->
+  <g transform="translate(256, 180)">
+    <path d="M0,-60 C-33.137,-60 -60,-32.863 -60,0 C-60,32.863 0,80 0,80 S60,32.863 60,0 C60,-32.863 33.137,-60 0,-60 Z" 
+          fill="url(#iconGradient)" stroke="#ffffff" stroke-width="4"/>
+    <circle cx="0" cy="0" r="20" fill="#059669"/>
+  </g>
+  
+  <!-- QR Code representation -->
+  <g transform="translate(180, 320)">
+    <rect x="0" y="0" width="152" height="152" fill="#ffffff" rx="8"/>
+    <rect x="8" y="8" width="24" height="24" fill="#059669"/>
+    <rect x="40" y="8" width="8" height="8" fill="#059669"/>
+    <rect x="56" y="8" width="8" height="8" fill="#059669"/>
+    <rect x="72" y="8" width="8" height="8" fill="#059669"/>
+    <rect x="88" y="8" width="8" height="8" fill="#059669"/>
+    <rect x="104" y="8" width="8" height="8" fill="#059669"/>
+    <rect x="120" y="8" width="24" height="24" fill="#059669"/>
+    
+    <rect x="8" y="24" width="8" height="8" fill="#059669"/>
+    <rect x="24" y="24" width="8" height="8" fill="#059669"/>
+    <rect x="40" y="24" width="8" height="8" fill="#059669"/>
+    <rect x="72" y="24" width="8" height="8" fill="#059669"/>
+    <rect x="104" y="24" width="8" height="8" fill="#059669"/>
+    <rect x="120" y="24" width="8" height="8" fill="#059669"/>
+    <rect x="136" y="24" width="8" height="8" fill="#059669"/>
+    
+    <rect x="8" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="16" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="24" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="48" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="64" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="80" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="96" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="120" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="128" y="40" width="8" height="8" fill="#059669"/>
+    <rect x="136" y="40" width="8" height="8" fill="#059669"/>
+    
+    <!-- More QR pattern -->
+    <rect x="40" y="56" width="8" height="8" fill="#059669"/>
+    <rect x="56" y="56" width="8" height="8" fill="#059669"/>
+    <rect x="88" y="56" width="8" height="8" fill="#059669"/>
+    <rect x="104" y="56" width="8" height="8" fill="#059669"/>
+    
+    <rect x="8" y="72" width="8" height="8" fill="#059669"/>
+    <rect x="32" y="72" width="8" height="8" fill="#059669"/>
+    <rect x="48" y="72" width="8" height="8" fill="#059669"/>
+    <rect x="72" y="72" width="8" height="8" fill="#059669"/>
+    <rect x="96" y="72" width="8" height="8" fill="#059669"/>
+    <rect x="136" y="72" width="8" height="8" fill="#059669"/>
+    
+    <!-- Bottom corners -->
+    <rect x="8" y="120" width="24" height="24" fill="#059669"/>
+    <rect x="120" y="120" width="24" height="24" fill="#059669"/>
+    <rect x="16" y="128" width="8" height="8" fill="#ffffff"/>
+    <rect x="128" y="128" width="8" height="8" fill="#ffffff"/>
+  </g>
+  
+  <!-- Checkmark for attendance -->
+  <g transform="translate(350, 280)">
+    <circle cx="0" cy="0" r="30" fill="#ffffff"/>
+    <path d="M-12,0 L-4,8 L12,-8" stroke="#059669" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
